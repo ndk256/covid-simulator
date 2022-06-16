@@ -1,0 +1,12 @@
+S v 9 5 -1 -1 none
+I v 11 7 -1 1 surgical
+S v 7 1 1 0 cloth
+I v 5 12 1 1 cloth
+S v 7 2 1 0 none
+S v 7 1 1 0 cloth
+R n 5 5 -1 1 none
+I v 1 7 -1 1 surgical
+S n 8 10 1 0 cloth
+I v 2 1 1 1 cloth
+S v 1 2 1 0 none
+S n 0 1 1 0 cloth

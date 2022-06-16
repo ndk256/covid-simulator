@@ -1,0 +1,17 @@
+I u 1 4 0 1 surgical
+I u 7 4 1 -1 cloth
+S v 10 2 -1 1 N95
+S v 7 11 1 0 cloth
+I u 5 2 1 1 cloth
+S v 3 3 1 -1 N95
+I u 7 7 1 -1 surgical
+S v 9 8 1 -1 N95
+S v 11 2 1 -1 surgical
+S v 2 3 1 -1 KN95
+S v 5 8 1 -1 surgical
+S u 2 9 1 -1 cloth
+I u 9 3 1 -1 surgical
+S u 1 10 1 -1 surgical
+S v 3 5 -1 -1 N95
+S v 6 6 0 1 surgical
+I v 7 7 -1 1 N95

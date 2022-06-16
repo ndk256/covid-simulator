@@ -1,0 +1,17 @@
+S u 3 3 1 -1 cloth
+I u 7 7 1 -1 cloth
+S v 9 8 1 -1 cloth
+S v 11 2 1 -1 cloth
+S u 2 3 1 -1 cloth
+S u 5 8 1 -1 cloth
+S u 2 3 1 -1 cloth
+I u 19 13 1 -1 cloth
+S u 1 1 1 -1 surgical
+S v 3 5 -1 -1 none
+S v 6 6 0 1 surgical
+I v 7 7 -1 1 surgical
+I u 1 4 0 1 none
+I u 7 4 1 -1 cloth
+S v 2 2 -1 1 none
+S u 7 1 1 0 cloth
+I u 5 2 1 1 cloth

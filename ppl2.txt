@@ -1,0 +1,12 @@
+S 1 8 1 -1 surgical
+S 9 5 -1 -1 N95
+S 2 6 0 1 surgical
+I 7 7 -1 1 surgical
+I 1 4 0 1 KN95
+S 3 3 1 -1 cloth
+I 2 2 -1 1 surgical
+S 7 1 1 0 cloth
+I 5 2 1 1 cloth
+S 1 1 1 0 cloth
+S 7 2 1 0 surgical
+S 8 4 0 1 KN95
