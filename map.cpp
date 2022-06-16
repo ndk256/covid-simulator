@@ -22,16 +22,13 @@ void Map::move(Person &person){
   //ensure the person's vector will not take them off the grid
   if(person.getXpos() + person.vec_x >= gx) person.vec_x = 0;
   if(person.getXpos() + person.vec_x < 0) person.vec_x = 0;
-  //note: want to reverse like this, or just do perpendicular??
-  //TODO: think on that
+  //one way: go perpendicular
   int destx = person.getXpos() + person.vec_x;
 
+  //another way: reverse direction
   if(person.getYpos() + person.vec_y >= gy) person.vec_y *= -1;
   if(person.getYpos() + person.vec_y < 0) person.vec_y *= -1;
   int desty = person.getYpos() + person.vec_y;
-
-  //cout << "person at " << person.getXpos() <<"," <<person.getYpos(); //debug
-  //cout << " would like to move to " << destx <<"," << desty << endl; //debug
 
   //re-pathing (if the destination space is occupied)
   if(!grid[destx][desty].open()){
@@ -85,8 +82,6 @@ void Map::move(Person &person){
       }
     } //end dealing with re-pathing
 
-  //cout << "person will move to " << destx <<","<<desty<<"."<<endl; //debug
-
   //compute facing
   person.head_x = destx - person.getXpos();
   person.head_y = desty - person.getYpos();
@@ -112,7 +107,6 @@ void Map::infection_update(int ts){
     if(people[i_people[j]].inf_status=='i'&&(ts-people[i_people[j]].state_time)>0)
     {
       vector<int> susc = check_cone(people[i_people[j]], INF_RAD);
-  // cout << susc.size() << " are susceptible\n";
       for(int i=0; i<susc.size(); i++){
         if(people[susc[i]].inf_status=='s'){
           if(rand()/RAND_MAX<inf_prob(people[i_people[j]],people[susc[i]])) //infection roll
@@ -181,7 +175,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()+i*p.head_x][p.getYpos()+j*p.head_y].ref);
         if(grid[p.getXpos()+i*p.head_x][p.getYpos()+j*p.head_y].contents!=' '||(p.getXpos()+i*p.head_x)<=0||(p.getXpos()+i*p.head_x)>=gx-1||
           (p.getYpos()+j*p.head_y)<=0||(p.getYpos()+j*p.head_y)>=gy-1){
-          i=radius+1; //end loop early (todo:check this pls)
+          i=radius+1; //end loop early (todo:check this)
         }
       }
     }
@@ -193,7 +187,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()+j*p.head_x][p.getYpos()+i*p.head_y].ref);
         if(grid[p.getXpos()+j*p.head_x][p.getYpos()+i*p.head_y].contents!=' '||(p.getXpos()+j*p.head_x)<=0||(p.getXpos()+j*p.head_x)>=gx-1||
           (p.getYpos()+i*p.head_y)<=0||(p.getYpos()+i*p.head_y)>=gy-1){
-          i=radius+1; //end early (todo:pls check)
+          i=radius+1; //end early (todo: check)
         }
       }
     }
@@ -208,7 +202,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()+j][p.getYpos()+i*p.head_y].ref);
         if(grid[p.getXpos()+j][p.getYpos()+i*p.head_y].contents!=' '||(p.getXpos()+j)<=0||(p.getXpos()+j)>=gx-1||
           (p.getYpos()+i*p.head_y)<=0||(p.getYpos()+i*p.head_y)>=gy-1){
-          i=radius+1; //end early (todo:pls check)
+          i=radius+1; //end early (todo: check)
         }
       }
     }
@@ -220,7 +214,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()-j][p.getYpos()+i*p.head_y].ref);
         if(grid[p.getXpos()-j][p.getYpos()+i*p.head_y].contents!=' '||(p.getXpos()-j)<=0||(p.getXpos()-j)>=gx-1||
           (p.getYpos()+i*p.head_y)<=0||(p.getYpos()+i*p.head_y)>=gy-1){
-          i=radius+1; //end early (todo:pls check)
+          i=radius+1; //end early (todo: check)
         }
       }
     }
@@ -231,7 +225,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()-j][p.getYpos()+j*p.head_y].ref);
       if(grid[p.getXpos()-j][p.getYpos()+j*p.head_y].contents!=' '||(p.getXpos()-j)<=0||(p.getXpos()-j)>=gx-1||
         (p.getYpos()+j*p.head_y)<=0||(p.getYpos()+j*p.head_y)>=gy-1){
-        j=radius; //end loop early (todo:check for off by one pls)
+        j=radius; //end loop early (todo:check for off by one)
       }
     }
     //right diagonal
@@ -241,7 +235,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()+j][p.getYpos()+j*p.head_y].ref);
       if(grid[p.getXpos()+j][p.getYpos()+j*p.head_y].contents!=' '||(p.getXpos()+j)<=0||(p.getXpos()+j)>=gx-1||
         (p.getYpos()+j*p.head_y)<=0||(p.getYpos()+j*p.head_y)>=gy-1){
-        j=radius; //end loop early (todo:check for off by one pls)
+        j=radius; //end loop early (todo:check for off by one)
       }
     }
     //vertical line
@@ -251,7 +245,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()][p.getYpos()+j*p.head_y].ref);
       if(grid[p.getXpos()][p.getYpos()+j*p.head_y].contents!=' '||(p.getXpos())<=0||(p.getXpos())>=gx-1||
         (p.getYpos()+j*p.head_y)<=0||(p.getYpos()+j*p.head_y)>=gy-1){
-        j=radius; //end loop early (todo:check for off by one pls)
+        j=radius; //end loop early (todo:check for off by one)
       }
     }
   }//end else if (vertical)
@@ -265,7 +259,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()+i*p.head_x][p.getYpos()+j].ref);
         if(grid[p.getXpos()+i*p.head_x][p.getYpos()+j].contents!=' '||(p.getXpos()+i*p.head_x)<=0||(p.getXpos()+i*p.head_x)>=gx-1||
           (p.getYpos()+j)<=0||(p.getYpos()+j)>=gy-1){
-          i=radius+1; //end early (todo:pls check)
+          i=radius+1; //end early (todo: check)
         }
       }
     }
@@ -277,7 +271,7 @@ vector<int> Map::check_cone(Person p, double r){
             susc.push_back(grid[p.getXpos()+i*p.head_x][p.getYpos()-j].ref);
         if(grid[p.getXpos()+i*p.head_x][p.getYpos()-j].contents!=' '||(p.getXpos()+i*p.head_x)<=0||(p.getXpos()+i*p.head_x)>=gx-1||
           (p.getYpos()-j)<=0||(p.getYpos()-j)>=gy-1){
-          i=radius+1; //end early (todo:pls check)
+          i=radius+1; //end early (todo: check)
         }
       }
     }
@@ -288,7 +282,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()-j*p.head_x][p.getYpos()+j].ref);
       if(grid[p.getXpos()-j*p.head_x][p.getYpos()+j].contents!=' '||(p.getXpos()-j*p.head_x)<=0||(p.getXpos()-j*p.head_x)>=gx-1||
         (p.getYpos()+j)<=0||(p.getYpos()+j)>=gy-1){
-        j=radius; //end loop early (todo:check for off by one pls)
+        j=radius; //end loop early (todo:check for off by one)
       }
     }
     //upper diagonal
@@ -298,7 +292,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()+j*p.head_x][p.getYpos()+j].ref);
       if(grid[p.getXpos()+j*p.head_x][p.getYpos()+j].contents!=' '||(p.getXpos()+j*p.head_x)<=0||(p.getXpos()+j*p.head_x)>=gx-1||
         (p.getYpos()+j)<=0||(p.getYpos()+j)>=gy-1){
-        j=radius; //end loop early todo:(check for off by one pls)
+        j=radius; //end loop early todo:(check for off by one)
       }
     }
     //horizontal line
@@ -308,7 +302,7 @@ vector<int> Map::check_cone(Person p, double r){
         susc.push_back(grid[p.getXpos()+j*p.head_x][p.getYpos()].ref);
       if(grid[p.getXpos()+j*p.head_x][p.getYpos()].contents!=' '||(p.getXpos()+j*p.head_x)<=0||(p.getXpos()+j*p.head_x)>=gx-1||
         (p.getYpos())<=0||(p.getYpos())>=gy-1){
-        j=radius; //end loop early (todo:check for off by one pls)
+        j=radius; //end loop early (todo:check for off by one)
       }
     }
   }
@@ -343,7 +337,7 @@ void Map::print_ppl(){
     cout << people[i].getXpos() << " " << people[i].getYpos() << " ";
     cout << people[i].head_x << " " << people[i].head_y << " "
       << people[i].mask_type
-      << "/";//for frontend
+      << "/"; //for frontend
   }
 }
 
@@ -386,19 +380,11 @@ void Map::grid_init(ifstream &gridfile){
 void Map::grid_init(int gridx, int gridy, string temp_mapinit){
   char cgrid[gridx*gridy+1];
   strcpy(cgrid,temp_mapinit.c_str());
-  //cout << gridx*gridy<<endl;//debug
-  //cout << temp_mapinit.length()<<endl<<endl;//debug
 
   gx=gridx; gy=gridy;
 
   for(int i=0; i<gridx; i++){
     for(int j=0; j<gridy; j++){
-      /*if(i>=gridx || j>=gridy)
-      {
-        cout << "oob";//debug
-        grid[i][j].init('X',0); //if it's outside the designated dimensions, it's a wall
-      }
-      else */
       if(j*gridx+i >= temp_mapinit.length()) //if there is less input than expected
         grid[i][j].init(' ',0); //make the space empty
       else
@@ -414,23 +400,18 @@ return;
 // and fills the people, numbers and i_people vectors appropriately
 // It also initializes the casecount
 void Map::ppl_init(string temp_pplinit){
-  temp_pplinit = temp_pplinit+"\n";//duct-tape fix ig //TODO: move this fix to the front end when calling
+  temp_pplinit = temp_pplinit+"\n";//duct-tape fix ig //TODO: is this still needed?
   replace(temp_pplinit.begin(),temp_pplinit.end(),'/','\n');//for frontend
   replace(temp_pplinit.begin(),temp_pplinit.end(),'_',' ');//for frontend
-  
-  //cout << "ppl input is:"<<temp_pplinit<<"=";//debug
-  
+    
   int mk=0, ind=temp_pplinit.find('\n',mk); //indexing variables to help move through the string
   string temp;
 
   do{
     temp = temp_pplinit.substr(mk, ind-mk);
     Person ptemp(temp);
-    if(!grid[ptemp.getXpos()][ptemp.getYpos()].init('P', people.size())){
-        //cout << "*Issue placing Person " << people.size(); //"debug" line
-        //cout << " (Person coords: "<<ptemp.getXpos()<<","<<ptemp.getYpos()<<")\n";//debug
-        }
-    else { //only put the person into the list if they can be placed
+    if(grid[ptemp.getXpos()][ptemp.getYpos()].init('P', people.size())){
+     //only put the person into the list if they can be placed
         people.push_back(ptemp);
         numbers.push_back(people.size()-1);
         if(ptemp.inf_status=='i')
@@ -454,11 +435,8 @@ void Map::ppl_init(ifstream &pplfile){
   while(!pplfile.fail()){
     getline(pplfile, temp, '\n');
     Person ptemp(temp);
-    if(!grid[ptemp.getXpos()][ptemp.getYpos()].init('P', people.size())){
-        //cout << "*Issue placing Person at " << ptemp.getXpos() << "," << ptemp.getYpos()<<endl;//debug
-        //<< people.size() << endl; //"debug" line
-        }
-    else { //only put the person into the list if they can be placed
+    if(grid[ptemp.getXpos()][ptemp.getYpos()].init('P', people.size())){
+        //only put the person into the list if they can be placed
         people.push_back(ptemp);
         numbers.push_back(people.size()-1);
         if(ptemp.inf_status=='i')
