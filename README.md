@@ -2,6 +2,7 @@
 
 This project is a spatially dependent simulator of disease spread over a closed area.
 The simulation itself runs in a C++ program, with the user interface presented on a webpage and linked back through AJAX.
+Everything is still a little rough, so the project is more a "proof of concept" than anything.
 
 Requirements:
 
