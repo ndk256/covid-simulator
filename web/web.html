@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="COVID-19 Simulator">
+  <meta name="author" content="Andy Kelleher">
+  <link rel="icon" href="./favicon.ico">
+  <!--<link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron/">-->
+
+  <title>COVID-19 Simulator</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <link rel="stylesheet" type="text/css" href="web.css">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" href="#">COVID-19 Simulator</a>
+  </nav>
+  <div style="padding-left:0.5rem;"> Welcome to the COVID-19 spatial simulator! Here's how to use it:<br/>First, put in or select a map, 
+    <br/><span style="color:orange;">*The grid display may become misaligned for larger grid widths.</span>
+    <br/>then specify the people in it, <br/>put in how long to run the simulation for,  <br>
+and see how infection plays out. (The total number of infections will be reported at the end.)
+    <br><br>
+  </div>
+<nav id="grid-entry">
+    Enter or select your grid here:<br>
+  <!--
+  <li class="btn-group">
+    <a href="#" id="map-dropdown" class="dropdown-toggle selection" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Preset Map<span class="caret"></span></a>
+    <ul class="dropdown-menu" role="form-dropdown">
+      <li id="map1.txt"><a href="#">Map 1 (10x10)</a></li>
+      <li id="map2.txt"><a href="#">Map 2 (20x12)</a></li>
+      <li id="map3.txt"><a href="#">Map 3 (6x6)</a></li>
+      <li id="map4.txt"><a href="#">Map 4 (20x11)</a></li>
+      <li id="map5.txt"><a href="#">Map 5 (27x14)</a></li>
+
+    </ul>
+  </li>
+  -->
+  <select name="map-dropdown" id="map-dropdown">
+    <option value="">Select a map from the dropdown</option>
+    <option value="map1.txt">Map 1 (10x10)</option>
+    <option value="map2.txt">Map 2 (20x12)</option>
+    <option value="map3.txt">Map 3 (6x6)</option>
+    <option value="map4.txt">Map 4 (20x11)</option>
+    <option value="map5.txt">Map 5 (27x14)</option>
+  </select>
+  <button type="button" class="btn btn-default" id="map-drop-done">
+    Confirm
+  </button>
+  <br/>
+  or
+  <br/>
+  <div id="map-text-cont">
+  <textarea id='map-sel-text' style="height:300px;margin-right:5px;"></textarea>
+  <div id="map-tbut-cont">
+  <button id="map-sel-btn" type="button">
+    <div>Input via text</div>
+  </button>
+  <br/><br/>
+  <button id="map-text-done" type="button"class="btn btn-default">
+    Submit
+  </button>
+</div>
+  </div>
+  <div id="map-text-note">(Any non-space characters will become unwalkable areas.)</div>
+</nav>
+  <span width="150px" id="case-count"><b>Case Count: <span id="case-count-n">...</span></b></span>
+
+  <div class="container col-sm-5" id="ppl-sidebar">
+    <span>Input details of people</span>
+    <div id="ppl-presel">
+    <div>From a preset population:</div>
+    <em>
+      Population 1 - 9 people; unvaccinated and mainly masked<br>
+     Population 2 - 12 people; unvaccinated and mainly masked<br>
+     Population 3 - 17 people; 1/3 vaccinated and mainly cloth masks<br>
+     Population 4 - 17 people; 1/2 vaccinated and mainly masked<br>
+     Population 5 - 5 people; mainly unvaccinated <br>
+     Population 6 - 12 people; mainly vaccinated
+    </em>
+    <br>
+    <select id="ppl-dropdown">
+      <option value = "">Select a population from the dropdown</option>
+      <option value="ppl1.txt">Population 1</option>
+      <option value="ppl2.txt">Population 2</option>
+      <option value="ppl3.txt">Population 3</option>
+      <option value="ppl4.txt">Population 4</option>
+      <option value="ppl5.txt">Population 5</option>
+      <option value="ppl6.txt">Population 6</option>
+    </select>
+    <button id="ppl-drop-done" class="btn btn-default">
+      Confirm
+    </button>
+  </div>
+    or
+    <button id="ppl-sel-btn">
+      <div>Input manually</div>
+    </button>
+    
+    <div id="ppl-entry">
+      <div id="ppl-list">
+    <div id="p1" class='p-sel'>
+      <br>
+      Infection status:<select class='isr'>
+        <option value='S'>Susceptible</option>
+        <option value='I'>Infected</option>
+        <option value='R'>Recovered/Resistant</option>
+      </select>
+      <br><input type='checkbox' class='vacc'></input> vaccinated 
+      <br>Starting position: x, y <input class='posn'></input>
+      <br>Heading: x, y <input class='head'></input>
+      <br>Mask type: <select class='mask'>
+        <option value=' '>unmasked</option>
+        <option value='cloth'>cloth mask</option>
+        <option value='surgical'>surgical mask</option>
+        <option value='n95'>N95/KN95/FFP2 mask</option>
+      </select>
+    </div>
+  </div>
+  <button id='add-p-btn' type='button'>+</button>
+
+    <!--
+    <textarea id="ppl-sel-text" style="height:300px;width:200px;"></textarea>
+    -->
+    <br>
+    <button id="ppl-text-done" type="button" class="btn btn-default">
+      <div>Submit</div>
+    </button>
+    </div>
+  </div>
+
+  <div style="padding-left:1rem;" id="timesteps">Number of time steps to run for:
+  <input id="ts" style="width:50px;"></input> <button id="start">Start Simulation</button>
+  </div>
+
+  <div class="jumbotron w-100 h-100">
+    
+    <span id="grid-v" class="col-sm-1 w-10 h-100" display="inline"></span>
+    
+    <div id ="grid-cont">
+    <span id="grid-h" class="w-90 d-inline-block" display="inline"></span>
+    
+    <br>
+    <pre id="grid" class="w-90 h-100 d-inline" display="inline-block"></pre>
+  </div>
+  </div>
+
+<div id="fin-options">
+  <button type="button" id="reset">
+    <div>Reset</div>
+  </button>
+  <!--<button type="button" id="rerun">
+    <div>Re-run with same parameters</div>
+  </button>-->
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="web.js" type="text/javascript"></script>
+
+</body>
+
+</html>

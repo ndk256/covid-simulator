@@ -1,0 +1,100 @@
+#grid-entry {
+  padding-left: 1rem;
+}
+
+#map-text-cont{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding-top:10px;
+}
+#map-sel-btn{
+  float:left;
+}
+#map-text-done{
+  float:left;
+}
+
+.jumbotron{
+  display:flex;
+  padding-bottom:0;
+  margin-bottom:10px;
+}
+
+#ppl-sidebar{
+  float:right;
+}
+@media screen and (max-width: 768px){
+  #ppl-sidebar{
+    float:none !important;
+  }
+}
+
+#grid{
+  font-size: 22.75px;
+  letter-spacing: 0.5em;
+  line-height: 0.5;
+}
+
+#grid-h{
+  font-size: 25px;
+  word-spacing: 0.05em;
+  padding-left: 1.01rem;
+}
+
+#grid-v{
+  font-size: 25px;
+  display: inline-flex;
+  line-height: 1;
+  padding-top: 0.85em;
+  justify-content:right;
+}
+
+/*#grid > div{
+  height: 25px; width: 25px;
+  display:inline-block;
+  margin: -2.675% 0;
+}*/
+#grid > span{
+  height: 25px; width: 25px;
+  display:inline-flex;
+}
+
+.o {
+  height: 25px; width: 25px;
+  display:inline-block;
+}
+
+.x {
+  height: 25px; width: 25px;
+  color: black;
+  background-color: black;
+  display:inline-block;
+}
+
+.i {
+  height: 25px; width: 25px;
+  color: red;
+  background-color: red;
+  display:inline-block;
+  border-radius: 50%;
+}
+
+.s {
+  height: 25px; width: 25px;
+  color: blue;
+  background-color: blue;
+  display:inline-block;
+  border-radius: 50%;
+}
+
+.r {
+  height: 25px; width: 25px;
+  color: lightblue;
+  background-color: lightblue;
+  display:inline-block;
+  border-radius: 50%;
+}
+
+#ts {
+   width:50px;
+}
