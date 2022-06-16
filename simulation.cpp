@@ -35,7 +35,7 @@ int main()
   map.grid_init(gx,gy,gname);
   
 if(pop_load_file){
-  file2.open("/usr/local/var/www/txt-bin/"+pname);
+  file2.open("/usr/local/var/www/txt-bin/"+pname); //replace this with your text files' path
   if(!file2.fail())
   {
     map.ppl_init(file2);
