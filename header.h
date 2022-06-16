@@ -6,7 +6,7 @@
 #include<cmath> //for pow()
 #include<fstream>
 
-const int ZZZ=30; //Can definitely increase this further
+const int ZZZ=30; //Upper limit on grid dimensions -- can definitely increase this further
 const int RES_PERIOD=3*30*24*60; //value is based on an approximately 3-month resistance period
 const double P_INF=0.324; //value is from a spring 2020 study conducted on a university campus
 const double INF_RAD=2; //infection radius, in meters (note: somewhat filler value)
@@ -64,7 +64,6 @@ public:
   void print_ppl();
   void move(Person &person);
   vector<int> check_cone(Person p, double r);
-  //vector<int> check_radius(int x, int y, double r);
 };
 
 #endif
