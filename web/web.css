@@ -49,11 +49,6 @@
   justify-content:right;
 }
 
-/*#grid > div{
-  height: 25px; width: 25px;
-  display:inline-block;
-  margin: -2.675% 0;
-}*/
 #grid > span{
   height: 25px; width: 25px;
   display:inline-flex;
