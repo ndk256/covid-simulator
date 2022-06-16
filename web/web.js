@@ -33,7 +33,7 @@ $(document).ready(function () {
     if(gridfname!="" && gridfname!=undefined){ //if not default value
 
       $.ajax({
-      	url: '/cgi-bin/kelleher1_file.cgi?ftype=g&fname='+gridfname,
+      	url: '/cgi-bin/covidsim_file.cgi?ftype=g&fname='+gridfname,
       	type: "get",
       	dataType: 'text',
       	success: displayGrid,
@@ -73,7 +73,7 @@ $(document).ready(function () {
 
     if(popfname!="" && popfname!=undefined){ //if not default value
     $.ajax({
-      url: '/cgi-bin/kelleher1_file.cgi?ftype=p&fname='+popfname,
+      url: '/cgi-bin/covidsim_file.cgi?ftype=p&fname='+popfname,
       type: "get",
       dataType: 'text',
       success: displayPopGrid,
@@ -87,26 +87,17 @@ $(document).ready(function () {
     //get the grid dimensions
     let gx = 1+parseInt($('#grid-h').text().split(' ')[$('#grid-h').text().split(' ').length-1]);
     let gy = 1+parseInt($('#grid-v').text().split(' ')[$('#grid-v').text().split(' ').length-1]);
-
-    //console.log(gy);//debug
-    //console.log(gx);//debug
-
-    //get the grid fname
-    //let grid = $('#map-dropdown').children(":selected").attr('value');
     
     let grid = $('#grid').html();
-    //console.log(grid);//debug
     grid = grid.replaceAll('<span class="x"></span>',"X");
     grid = grid.replaceAll('<span class="i"></span>',"_");
     grid = grid.replaceAll('<span class="s"></span>',"_");
     grid = grid.replaceAll('<span class="r"></span>',"_");
-    grid = grid.replaceAll('<span> </span>', '_'); //will this help?
+    grid = grid.replaceAll('<span> </span>', '_');
     grid = grid.replaceAll('\n', ''); //maybe??
-    //console.log(grid);//debug
     
     //get the population fname
     let ppl = $('#ppl-dropdown').children(":selected").attr('value');
-    console.log(ppl);//debug
     if(ppl == undefined || ppl==""){
       ppl = parseEntries($('#ppl-entry'));
       ppl = ppl.replaceAll(' ', '_');
@@ -116,15 +107,11 @@ $(document).ready(function () {
       ppl = '&pf=1&pop=' + ppl;
     }
     
-    //console.log(ppl);
-    //console.log("done parsing; sending soon");//debug
-    
     //get the timesteps 
     let ts = $('#ts').val();
-    //console.log($('#ts').val())
 
     $.ajax({
-      url: '/cgi-bin/kelleher1_sim.cgi?xdim='+gx+'&ydim='+gy+'&grid='+grid+ppl+'&timesteps='+ts,
+      url: '/cgi-bin/covidsim_sim.cgi?xdim='+gx+'&ydim='+gy+'&grid='+grid+ppl+'&timesteps='+ts,
       type: "get",
       dataType: 'text',
       success: animateGrid,
@@ -144,6 +131,8 @@ $(document).ready(function () {
     $('#grid-v').empty();
     changeState("GridEntry");
   });
+  
+  //NOTE: #rerun is currently commented out of the HTML
   $('#rerun').click(function(){
     changeState("Simulation");
     //TODO: more once sim is done
@@ -157,7 +146,6 @@ function displayGrid(grid){
   console.log(grid);//debug
 
   var lining = grid.split("\n"); grid="";
-  //console.log(lining);//debug 
   let max=0;
   lining = lining.slice(0, -1);
   console.log(lining);//debug 
@@ -243,17 +231,13 @@ function parseEntries(ppl_entries){
    console.log(p_str);//debug
    return { p_str };
   }).get();
-  
-  //console.log(p_arr);//debug 
-  
+    
   let pt_arr = [];
   p_arr.forEach(function(o){
     pt_arr.push(o.p_str);
   })
-  //console.log(pt_arr);//debug
   
   let p_text = pt_arr.join('/')+'/';
-  console.log(p_text);//debug
   
   return p_text;
 }
@@ -262,37 +246,26 @@ function populate(grid, pop){
   console.log(pop); //debug
   pop = pop.split("/").slice(0, -1);
   console.log(pop);//debug
-  //console.log(grid.length);//debug??
   var ppl = Array(grid.size).fill(' '); //this isn't working as intended
-   //but like, the whole thing does what it's supposed to anyway, so...??
-  //console.log(ppl);//debug
-  var len = grid.split("\n")[0].length+1; //?
-  //console.log(len);//debug
+   //but the whole thing does what it's supposed to anyway, so...??
+  var len = grid.split("\n")[0].length+1;
 
   pop.forEach(function(p){
     p = p.split(' ');
-    //console.log(p);//debug
     ppl[parseInt(p[2])+len*parseInt(p[3])] = p[0];
   });
-  //console.log(ppl);//debug
-
-  //console.log(grid);//debug
+  
   arr = grid.split("");
-  //console.log(arr.length);//debug
   for(var i=0; i<arr.length; i++){
     if((ppl[i]=='R'||ppl[i]=='S'||ppl[i]=='I')&& arr[i]==' '){
       arr[i] = ppl[i].charAt(0);
-      //console.log(i);//// DEBUG
-      //console.log(arr[i]); //debug
     }
   }
   grid = "";
-  //console.log(arr);//debug
   arr.forEach(function(char){
     grid += char;
   });
 
-  console.log(grid);
   return grid;
 }
 
@@ -329,21 +302,19 @@ function displayPopGrid(pop){
 }
 
 function animateGrid(gridList){
-    console.log(gridList.split('='));//debug
+    gridList = gridList.split('=');
+    console.log(gridList);//debug
   
-    gridList.split('=');
-        
-    for(let i=0; i<gridList.split('=').length-1; i++){
-      //console.log(i);//debug     
+    for(let i=0; i<gridList.length-1; i++){
     setTimeout(function() {
-          displayGridFrame(gridList.split('=')[i]);
+          displayGridFrame(gridList[i]);
         }, 1300*i);
       }
     
-    $('#case-count-n').text(gridList.split('=')[gridList.split('=').length-1]);
+    $('#case-count-n').text(gridList[gridList.length-1]);
     
     setTimeout(
-      function(){ changeState("SimEnd"); }, 1300*gridList.split('=').length
+      function(){ changeState("SimEnd"); }, 1300*gridList.length
     );
 }
 
@@ -359,14 +330,12 @@ $('.container').hide();
       break;
     case "TimeSteps":
     $('textarea').hide();
-    //$('#ppl-sidebar').style.width="0px";//??
     $('#ppl-sidebar').hide();
     $('#timesteps').show();
       break;
     case "PopEntry":
     $('#ppl-sel-btn').text('Start manual entry');
     $('textarea').hide();
-    //$('#grid').classList.add('col-sm-6');
     $('#grid').show();
     $('#grid-entry').hide();
     $('#ppl-sidebar').show();
@@ -379,7 +348,6 @@ $('.container').hide();
     $('#map-text-done').hide();
     $('#map-text-note').hide();
     $('#ppl-sidebar').hide();
-    //$('#ppl-entry').hide();
     $('#timesteps').hide();
     $('#fin-options').hide();
     $('#case-count').hide();
